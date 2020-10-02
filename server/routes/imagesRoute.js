@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const imagesController = require('../controllers/images');
+const imagesController = require('../controllers/imagesController');
 
-router.get('/:page', imagesController.getImages);
+router.get('/', imagesController.getImages);
 
 router.get('/:id', imagesController.getImage);
 
