@@ -1,8 +1,9 @@
 require('dotenv').config();
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
+const bodyParser = require('body-parser');
+const multer = require('multer');
 
 const swaggerDocument = require('./swagger.json');
 const {imagesRoute, usersRoute, commentsRoute, ratingsRoute} = require('./routes');
@@ -21,6 +22,10 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 // Json body parsing middleware
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+// multipart/form-data parsing
+const upload = multer({destination: 'uploads/'});
+app.use(upload.single('image'));
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/images', imagesRoute);
