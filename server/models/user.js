@@ -8,7 +8,6 @@ const UserModelSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        select: false,
         minlength: [6, 'Password must be at least 6 letters long'],
         required: [true, 'Password if required']
     },
@@ -23,7 +22,6 @@ const UserModelSchema = new mongoose.Schema({
     toJSON: {
         transform: (doc, ret, options) => {
             delete ret.password;
-            delete ret.__v;
         }
     }
 });

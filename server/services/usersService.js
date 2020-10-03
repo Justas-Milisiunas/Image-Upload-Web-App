@@ -20,7 +20,7 @@ module.exports.createUser = async (email, password) => {
     const error = newUser.validateSync();
     if (error) {
         console.log(error.message);
-        return;
+        return null;
     }
 
     return await newUser.save();

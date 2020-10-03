@@ -17,7 +17,7 @@ module.exports.registerNewUser = async (req, res) => {
         return;
     }
 
-    res.send(createdUser);
+    res.status(HttpStatus.CREATED).send(createdUser);
 }
 
 module.exports.getUser = async (req, res) => {
