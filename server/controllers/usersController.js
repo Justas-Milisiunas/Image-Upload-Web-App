@@ -1,6 +1,8 @@
 const usersService = require('../services/usersService');
 const HttpStatus = require('http-status-codes');
 
+const UserRole = require('../models/userRole');
+
 module.exports.getAllUsers = async (req, res) => {
     const allUsers = await usersService.getUsers();
     res.send(allUsers);
@@ -22,7 +24,7 @@ module.exports.registerNewUser = async (req, res) => {
 
 module.exports.getUser = async (req, res) => {
     const userId = req.params.id;
-    const foundUser = await usersService.getUser(userId);
+    const foundUser = await usersService.getUserById(userId);
 
     if (!foundUser) {
         res.status(HttpStatus.NOT_FOUND).send({

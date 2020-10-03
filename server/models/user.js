@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const UserRole = require('./userRole')
 
 // TODO: Add regex validation for the email
 const UserModelSchema = new mongoose.Schema({
@@ -17,6 +18,11 @@ const UserModelSchema = new mongoose.Schema({
     },
     ip: {
         type: String
+    },
+    role: {
+        type: Number,
+        enum: [UserRole.USER, UserRole.ADMIN],
+        default: UserRole.USER
     }
 }, {
     toJSON: {
@@ -24,6 +30,13 @@ const UserModelSchema = new mongoose.Schema({
             delete ret.password;
         }
     }
+});
+
+UserModelSchema.virtual('tokenPayload').get(function () {
+   return {
+       _id: this._id,
+       role: this.role
+   }
 });
 
 module.exports = mongoose.model('User', UserModelSchema);

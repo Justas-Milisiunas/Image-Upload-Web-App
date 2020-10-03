@@ -2,7 +2,7 @@ const User = require('../models/user');
 
 module.exports.getUsers = async () => User.find();
 
-module.exports.getUser = async (id) => {
+module.exports.getUserById = async (id) => {
     try {
         return await User.findById(id);
     } catch (e) {
@@ -11,7 +11,21 @@ module.exports.getUser = async (id) => {
     }
 }
 
+module.exports.getUser = async (email, password) => {
+    try {
+        return await User.findOne({email, password});
+    } catch (e) {
+        console.log(e.message);
+        return null;
+    }
+}
+
 module.exports.createUser = async (email, password) => {
+    const alreadyExists = await User.findOne({email});
+    if (alreadyExists) {
+        return null;
+    }
+
     let newUser = new User({
         email,
         password

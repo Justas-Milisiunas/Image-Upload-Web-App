@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const usersController = require('../controllers/usersController');
+const {authorize} = require('../middlewares/authMiddleware');
+const UserRole = require('../models/userRole');
 
-router.get('/', usersController.getAllUsers);
+router.get('/', authorize([UserRole.ADMIN]), usersController.getAllUsers);
 
 router.get('/:id', usersController.getUser);
 
