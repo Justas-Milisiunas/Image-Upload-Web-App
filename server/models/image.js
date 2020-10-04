@@ -74,6 +74,18 @@ ImageModelSchema.methods.addRating = async function (userId, rating) {
     return savedRating;
 }
 
+ImageModelSchema.methods.deleteRating = async function(ratingId) {
+    const foundRating = this.rating.id(ratingId);
+    if (!foundRating) {
+        return null;
+    }
+
+    foundRating.remove();
+    await this.save();
+
+    return foundRating;
+}
+
 ImageModelSchema.virtual('ratingSum').get(function () {
     return this.rating.reduce((sum, r) => sum + r.rating, 0);
 });

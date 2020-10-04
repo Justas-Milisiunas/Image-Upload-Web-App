@@ -17,13 +17,9 @@ module.exports.updateRating = async (ratingId, updatedRatingData) => {
     };
 }
 
-module.exports.deleteRating = async (ratingId) => {
-    return {
-        id: 1,
-        imageId: 1,
-        userId: 1,
-        rating: 1
-    };
+module.exports.deleteRating = async (imageId, ratingId) => {
+    const foundImage = await imageService.getImageAsync(imageId);
+    return foundImage && await foundImage.deleteRating(ratingId);
 }
 
 module.exports.createRating = async (imageId, userId, rating) => {

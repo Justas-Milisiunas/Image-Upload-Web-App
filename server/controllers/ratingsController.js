@@ -27,9 +27,13 @@ module.exports.updateRating = async (req, res) => {
 }
 
 module.exports.deleteRating = async (req, res) => {
-    const id = req.params.id;
+    const {imageId, id} = req.params;
 
-    const deleteRating = await ratingsService.deleteRating(id);
+    const deleteRating = await ratingsService.deleteRating(imageId, id);
+    if(!deleteRating) {
+        return res.status(HttpStatus.BAD_REQUEST).send({error: 'Invalid request data'});
+    }
+
     res.send(deleteRating);
 }
 

@@ -11,7 +11,7 @@ router.get('/:imageId', ratingsController.getImageRatings);
 
 router.put('/:id', ratingsController.updateRating);
 
-router.delete('/:id', ratingsController.deleteRating);
+router.delete('/:imageId/:id', ratingsController.deleteRating);
 
 router.post('/', authorize([UserRole.USER, UserRole.ADMIN]), ratingsController.createRating);
 
