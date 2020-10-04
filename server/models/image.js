@@ -86,6 +86,29 @@ ImageModelSchema.methods.deleteRating = async function(ratingId) {
     return foundRating;
 }
 
+ImageModelSchema.methods.updateRating = async function(ratingId, ratingData) {
+    const foundRating = this.rating.id(ratingId);
+    if (!foundRating) {
+        return null;
+    }
+
+    if(foundRating.rating === ratingData.rating) {
+        return null;
+    }
+
+    foundRating.rating = ratingData.rating;
+
+    // Checks if new rating is valid
+    const error = this.validateSync();
+    if(error) {
+        console.log(error.message);
+        return null;
+    }
+
+    await this.save();
+    return foundRating;
+}
+
 ImageModelSchema.virtual('ratingSum').get(function () {
     return this.rating.reduce((sum, r) => sum + r.rating, 0);
 });

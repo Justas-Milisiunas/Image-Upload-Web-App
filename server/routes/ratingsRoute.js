@@ -5,11 +5,13 @@ const ratingsController = require('../controllers/ratingsController');
 const {authorize} = require('../middlewares/authMiddleware');
 const UserRole = require('../models/userRole');
 
+// TODO: Add authorization to let only rating creator update, delete his ratings
+
 router.get('/', authorize([UserRole.ADMIN]), ratingsController.getAllRatings);
 
 router.get('/:imageId', ratingsController.getImageRatings);
 
-router.put('/:id', ratingsController.updateRating);
+router.put('/:imageId/:id', ratingsController.updateRating);
 
 router.delete('/:imageId/:id', ratingsController.deleteRating);
 

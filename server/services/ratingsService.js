@@ -8,13 +8,9 @@ module.exports.getImageRating = async (imageId) => {
 
 module.exports.getAllRatings = async () => Image.getAllRatings();
 
-module.exports.updateRating = async (ratingId, updatedRatingData) => {
-    return {
-        id: 1,
-        imageId: 1,
-        userId: 1,
-        rating: -1
-    };
+module.exports.updateRating = async (imageId, ratingId, newRatingData) => {
+    const foundImage = await imageService.getImageAsync(imageId);
+    return foundImage && await foundImage.updateRating(ratingId, newRatingData);
 }
 
 module.exports.deleteRating = async (imageId, ratingId) => {

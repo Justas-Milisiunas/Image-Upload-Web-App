@@ -19,10 +19,14 @@ module.exports.getImageRatings = async (req, res) => {
 }
 
 module.exports.updateRating = async (req, res) => {
-    const id = req.params.id;
+    const {imageId, id} = req.params;
     const updatedRatingData = req.body;
 
-    const updatedRating = await ratingsService.updateRating(id, updatedRatingData);
+    const updatedRating = await ratingsService.updateRating(imageId, id, updatedRatingData);
+    if (!updatedRating) {
+        return res.status(HttpStatus.BAD_REQUEST).send({error: 'Invalid rating data'});
+    }
+
     res.send(updatedRating);
 }
 
