@@ -67,15 +67,24 @@ ImageModelSchema.methods.addRating = async function (userId, rating) {
     }
 
     // Adds rating subdoc to the Image document
-    await this.update({
+    await this.updateOne({
         $push: {rating: savedRating}
     });
 
     return savedRating;
 }
 
+ImageModelSchema.virtual('ratingSum').get(function () {
+    return this.rating.reduce((sum, r) => sum + r.rating, 0);
+});
+
 ImageModelSchema.virtual('url').get(function () {
     return process.env.HOST_IP + '/images/' + this._id;
 });
+
+ImageModelSchema.statics.getAllRatings = async function () {
+    const allImages = await this.find({}, 'rating');
+    return allImages.map(image => image.rating).flat();
+}
 
 module.exports = mongoose.model('Image', ImageModelSchema);

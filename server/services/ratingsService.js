@@ -1,38 +1,12 @@
 const imageService = require('./imagesService');
+const Image = require('../models/image');
 
-module.exports.getRatings = async () => {
-    return [
-        {
-            id: 1,
-            imageId: 1,
-            userId: 1,
-            rating: 1
-        },
-        {
-            id: 2,
-            imageId: 1,
-            userId: 1,
-            rating: -1
-        }
-    ];
+module.exports.getImageRating = async (imageId) => {
+    const foundImage = await imageService.getImageAsync(imageId);
+    return foundImage && foundImage.ratingSum;
 }
 
-module.exports.getImageRatings = async (imageId) => {
-    return [
-        {
-            id: 1,
-            imageId: 1,
-            userId: 1,
-            rating: 1
-        },
-        {
-            id: 2,
-            imageId: 1,
-            userId: 1,
-            rating: -1
-        }
-    ];
-}
+module.exports.getAllRatings = async () => Image.getAllRatings();
 
 module.exports.updateRating = async (ratingId, updatedRatingData) => {
     return {

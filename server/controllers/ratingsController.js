@@ -3,15 +3,19 @@ const HttpStatus = require('http-status-codes');
 const ratingsService = require('../services/ratingsService');
 
 module.exports.getAllRatings = async (req, res) => {
-    const allRatings = await ratingsService.getRatings();
+    const allRatings = await ratingsService.getAllRatings();
     res.send(allRatings);
 }
 
 module.exports.getImageRatings = async (req, res) => {
-    const imageId = req.params.id;
+    const imageId = req.params.imageId;
 
-    const foundRatings = await ratingsService.getImageRatings(imageId);
-    res.send(foundRatings);
+    const foundRatings = await ratingsService.getImageRating(imageId);
+    if(!foundRatings) {
+        return res.status(HttpStatus.NOT_FOUND).send({error: 'Image not found'});
+    }
+
+    res.send({rating: foundRatings});
 }
 
 module.exports.updateRating = async (req, res) => {

@@ -5,9 +5,9 @@ const ratingsController = require('../controllers/ratingsController');
 const {authorize} = require('../middlewares/authMiddleware');
 const UserRole = require('../models/userRole');
 
-router.get('/', ratingsController.getAllRatings);
+router.get('/', authorize([UserRole.ADMIN]), ratingsController.getAllRatings);
 
-router.get('/:id', ratingsController.getImageRatings);
+router.get('/:imageId', ratingsController.getImageRatings);
 
 router.put('/:id', ratingsController.updateRating);
 
