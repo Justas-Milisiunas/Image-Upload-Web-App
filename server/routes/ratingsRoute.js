@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const ratingsController = require('../controllers/ratingsController');
-const {authorize} = require('../middlewares/authMiddleware');
+const {authorize} = require('../middlewares/authorizationMiddleware');
 const UserRole = require('../models/userRole');
 
 // TODO: Add authorization to let only rating creator update, delete his ratings

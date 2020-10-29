@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const imagesController = require('../controllers/imagesController');
+const { authorize } = require('../middlewares/authorizationMiddleware');
+const UserRole = require('../models/userRole');
 
 router.get('/', imagesController.getImages);
 
@@ -13,6 +15,10 @@ router.delete('/:id', imagesController.deleteImage);
 
 router.get('/:id/:password', imagesController.getProtectedImage);
 
-router.post('/', imagesController.uploadImage);
+router.post(
+  '/',
+  authorize([UserRole.ADMIN, UserRole.USER]),
+  imagesController.uploadImage
+);
 
 module.exports = router;

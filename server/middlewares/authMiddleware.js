@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
-const HttpStatus = require('http-status-codes');
 
 const UserRole = require('../models/userRole');
 /**
@@ -26,22 +25,8 @@ module.exports.user = (req, res, next) => {
 
         next();
     } catch (e) {
-        console.log(e.message);
-        return res.status(HttpStatus.BAD_REQUEST).status({error: 'Invalid access token'});
-    }
-}
-
-/**
- * Endpoint authorization middleware. If no roles provided, anyone can access
- * @param roles User roles
- */
-module.exports.authorize = (roles = []) => {
-    return (req, res, next) => {
-        const userRole = req.user['role'];
-        if (!roles.includes(userRole)) {
-            return res.status(HttpStatus.FORBIDDEN).send({error: 'Access denied'});
-        }
-
-        next();
+        // console.log(e.message);
+        // return res.status(HttpStatus.BAD_REQUEST).status({error: 'Invalid access token'});
+        next(e);
     }
 }

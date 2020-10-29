@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const commentsController = require('../controllers/commentsController');
-const {authorize} = require('../middlewares/authMiddleware');
+const {authorize} = require('../middlewares/authorizationMiddleware');
 const UserRole = require('../models/userRole');
 
 router.get('/', commentsController.getAllComments);
