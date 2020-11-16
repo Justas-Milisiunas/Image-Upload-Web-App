@@ -14,6 +14,7 @@ const {
   ratingsRoute,
   authRoute,
 } = require('./routes');
+
 const authMiddleware = require('./middlewares/authMiddleware');
 const errorMiddleware = require('./middlewares/errorMiddleware');
 

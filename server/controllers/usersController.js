@@ -1,66 +1,53 @@
 const usersService = require('../services/usersService');
 const HttpStatus = require('http-status-codes');
 
-const UserRole = require('../models/userRole');
-
 module.exports.getAllUsers = async (req, res) => {
-    const allUsers = await usersService.getUsers();
-    res.send(allUsers);
-}
+  const allUsers = await usersService.getUsers();
+  res.send(allUsers);
+};
 
-module.exports.registerNewUser = async (req, res) => {
-    const {email, password} = req.body;
+module.exports.registerNewUser = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  try {
     const createdUser = await usersService.createUser(email, password);
-
-    if (!createdUser) {
-        res.status(HttpStatus.BAD_REQUEST).json({
-            error: 'Invalid model data'
-        });
-        return;
-    }
-
     res.status(HttpStatus.CREATED).send(createdUser);
-}
+  } catch (e) {
+    next(e);
+  }
+};
 
-module.exports.getUser = async (req, res) => {
-    const userId = req.params.id;
+module.exports.getUser = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
     const foundUser = await usersService.getUserById(userId);
 
-    if (!foundUser) {
-        res.status(HttpStatus.NOT_FOUND).send({
-            error: 'User not found'
-        });
-        return;
-    }
-
     res.send(foundUser);
-}
+  } catch (e) {
+    next(e);
+  }
+};
 
-module.exports.deleteUser = async (req, res) => {
-    const userId = req.params.id;
+module.exports.deleteUser = async (req, res, next) => {
+  const { _id: userId } = req.user;
+
+  try {
     const deletedUser = await usersService.deleteUser(userId);
 
-    if (!deletedUser) {
-        res.status(HttpStatus.NOT_FOUND).send({
-            error: 'User not found'
-        });
-        return;
-    }
-
     res.send(deletedUser);
-}
+  } catch (e) {
+    next(e);
+  }
+};
 
-module.exports.updateUser = async (req, res) => {
-    const userId = req.params.id;
-    const newUserData = req.body;
+module.exports.updateUser = async (req, res, next) => {
+  const { user, body: newUserData } = req;
 
-    const updatedUser = await usersService.updateUser(userId, newUserData);
-    if (!updatedUser) {
-        res.status(HttpStatus.NOT_FOUND).send({
-            error: 'User not found or invalid data'
-        });
-        return;
-    }
-
+  try {
+    const updatedUser = await usersService.updateUser(user, newUserData);
     res.send(updatedUser);
-}
+  } catch (e) {
+    next(e);
+  }
+};

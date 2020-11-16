@@ -1,62 +1,62 @@
+const createError = require('http-errors');
+
+const authService = require('./authService');
 const User = require('../models/user');
 
 module.exports.getUsers = async () => User.find();
 
 module.exports.getUserById = async (id) => {
-    try {
-        return await User.findById(id);
-    } catch (e) {
-        console.log(e.message);
-        return null;
-    }
-}
+  const foundUser = await User.findById(id);
+  if (!foundUser) {
+    throw createError.NotFound('User not found');
+  }
+
+  return foundUser;
+};
 
 module.exports.getUser = async (email, password) => {
-    try {
-        return await User.findOne({email, password});
-    } catch (e) {
-        console.log(e.message);
-        return null;
-    }
-}
+  const foundUser = await User.findOne({ email, password });
+  if (!foundUser) {
+    throw createError.NotFound('User not found');
+  }
+
+  return foundUser;
+};
 
 module.exports.createUser = async (email, password) => {
-    const alreadyExists = await User.findOne({email});
-    if (alreadyExists) {
-        return null;
-    }
+  const alreadyExists = await User.findOne({ email });
+  if (alreadyExists) {
+    throw createError.Conflict(
+      `User with ${email} email is already registered`
+    );
+  }
 
-    let newUser = new User({
-        email,
-        password
-    });
+  let newUser = new User({
+    email,
+    password,
+  });
 
-    const error = newUser.validateSync();
-    if (error) {
-        console.log(error.message);
-        return null;
-    }
+  const error = newUser.validateSync();
+  if (error) {
+    throw createError.BadRequest(error.message);
+  }
 
-    return await newUser.save();
-}
+  return await newUser.save();
+};
 
 module.exports.deleteUser = async (id) => {
-    try {
-        return await User.findByIdAndDelete(id);
-    } catch (e) {
-        console.log(e.message)
-        return null;
-    }
-}
+  const deletedUser = await User.findByIdAndDelete(id);
+  if (!deletedUser) {
+    throw createError.NotFound('User not found');
+  }
 
-module.exports.updateUser = async (id, newUserData) => {
-    try {
-        return await User.findByIdAndUpdate(id, newUserData, {
-            new: true
-        });
-    } catch (e) {
-        console.log(e.message);
-        return null;
-    }
-}
+  authService.logout(id);
+  return deletedUser;
+};
 
+module.exports.updateUser = async (user, newUserData) => {
+  return await User.findByIdAndUpdate(user._id, newUserData, {
+    new: true,
+    runValidators: true,
+  });
+};

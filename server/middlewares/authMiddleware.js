@@ -25,8 +25,6 @@ module.exports.user = (req, res, next) => {
 
         next();
     } catch (e) {
-        // console.log(e.message);
-        // return res.status(HttpStatus.BAD_REQUEST).status({error: 'Invalid access token'});
         next(e);
     }
 }

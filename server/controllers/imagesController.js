@@ -22,10 +22,13 @@ module.exports.getImage = async (req, res, next) => {
 };
 
 module.exports.updateImage = async (req, res, next) => {
+  const { user, body, params } = req;
+
   try {
     const updatedImage = await imagesService.updateImageAsync(
-      req.params.id,
-      req.body
+      params.id,
+      body,
+      user
     );
 
     res.send(updatedImage);
@@ -36,8 +39,10 @@ module.exports.updateImage = async (req, res, next) => {
 };
 
 module.exports.deleteImage = async (req, res, next) => {
+  const {user, params} = req;
+
   try {
-    const foundImageData = await imagesService.deleteImageAsync(req.params.id);
+    const foundImageData = await imagesService.deleteImageAsync(params.id, user);
     res.send(foundImageData);
   } catch (e) {
     next(e);
@@ -58,7 +63,7 @@ module.exports.uploadImage = async (req, res, next) => {
     const uploadedImage = await imagesService.uploadImage(
       title,
       image,
-      req.user._id
+      req.user,
     );
 
     res.status(HttpStatus.CREATED).send(uploadedImage);

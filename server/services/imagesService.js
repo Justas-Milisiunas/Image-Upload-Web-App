@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const mime = require('mime-types');
 const createError = require('http-errors');
 
+const UserRole = require('../models/userRole');
 const Image = require('../models/image');
 
 module.exports.getImages = async () => Image.find();
@@ -15,28 +16,23 @@ module.exports.getImageAsync = async (id) => {
   return foundImage;
 };
 
-module.exports.updateImageAsync = async (id, updatedImageData) => {
-  const updatedImage = await Image.findByIdAndUpdate(id, updatedImageData, {
-    new: true,
-  });
+module.exports.updateImageAsync = async (imageId, updatedImageData, user) => {
+  const { title } = updatedImageData;
 
-  if (!updatedImage) {
-    throw createError.BadRequest('Invalid image data');
-  }
+  const foundImage = await this.getImageAsync(imageId);
+  checkIfUserImageOwner(foundImage, user);
 
-  return updatedImage;
+  foundImage.title = title;
+  await foundImage.save();
+
+  return foundImage;
 };
 
-module.exports.deleteImageAsync = async (id) => {
-  const foundImageData = await Image.findByIdAndDelete(id);
-  if (!foundImageData) {
-    throw createError.NotFound('Image not found');
-  }
+module.exports.deleteImageAsync = async (id, user) => {
+  const foundImage = await this.getImageAsync(id);
+  checkIfUserImageOwner(foundImage, user);
 
-  await fs.unlink(
-    `./${process.env.UPLOADED_IMAGES_DIRECTORY}/${foundImageData._id}.${foundImageData.extension}`
-  );
-  return foundImageData;
+  return await foundImage.remove();
 };
 
 module.exports.getProtectedImageAsync = async (id) => {
@@ -51,8 +47,7 @@ module.exports.getProtectedImageAsync = async (id) => {
   };
 };
 
-// TODO: Remove hardcoded userId
-module.exports.uploadImage = async (title, file, userId) => {
+module.exports.uploadImage = async (title, file, { _id: userId }) => {
   const extension = mime.extension(file.mimetype);
 
   const newImage = new Image({
@@ -72,4 +67,10 @@ module.exports.uploadImage = async (title, file, userId) => {
   }
 
   return await newImage.save();
+};
+
+const checkIfUserImageOwner = async (image, user) => {
+  if (user._id !== image.userId && user.role !== UserRole.ADMIN) {
+    throw createError.Forbidden('You are not the owner of this image');
+  }
 };

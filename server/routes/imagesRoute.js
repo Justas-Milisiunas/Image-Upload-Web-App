@@ -9,9 +9,17 @@ router.get('/', imagesController.getImages);
 
 router.get('/:id', imagesController.getImage);
 
-router.patch('/:id', imagesController.updateImage);
+router.patch(
+  '/:id',
+  authorize([UserRole.ADMIN, UserRole.USER]),
+  imagesController.updateImage
+);
 
-router.delete('/:id', imagesController.deleteImage);
+router.delete(
+  '/:id',
+  authorize([UserRole.ADMIN, UserRole.USER]),
+  imagesController.deleteImage
+);
 
 router.get('/:id/:password', imagesController.getProtectedImage);
 
