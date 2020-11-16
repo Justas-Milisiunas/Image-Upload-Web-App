@@ -2,26 +2,24 @@ const HttpStatus = require('http-status-codes');
 
 const authService = require('../services/authService');
 
-module.exports.loginUser = async (req, res) => {
-    const {email, password} = req.body;
+module.exports.loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
 
+  try {
     const tokens = await authService.login(email, password);
-    if (!tokens) {
-        res.status(HttpStatus.BAD_REQUEST).send({error: 'Bad login data'});
-        return;
-    }
-
     res.json(tokens);
-}
+  } catch (e) {
+    next(e);
+  }
+};
 
-module.exports.refreshToken = async (req, res) => {
-    const {refreshToken} = req.body;
+module.exports.refreshToken = async (req, res, next) => {
+  const { refreshToken } = req.body;
 
+  try {
     const newAccessToken = await authService.refreshAccessToken(refreshToken);
-    if (!newAccessToken) {
-        res.status(HttpStatus.NOT_FOUND).send({error: 'Invalid request token'});
-        return;
-    }
-
-    res.json({accessToken: newAccessToken});
-}
+    res.json({ accessToken: newAccessToken });
+  } catch (e) {
+    next(e);
+  }
+};
