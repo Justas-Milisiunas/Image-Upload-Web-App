@@ -33,16 +33,18 @@ module.exports.updateImage = async (req, res, next) => {
 
     res.send(updatedImage);
   } catch (e) {
-    res.status(HttpStatus.BAD_REQUEST);
     next(e);
   }
 };
 
 module.exports.deleteImage = async (req, res, next) => {
-  const {user, params} = req;
+  const { user, params } = req;
 
   try {
-    const foundImageData = await imagesService.deleteImageAsync(params.id, user);
+    const foundImageData = await imagesService.deleteImageAsync(
+      params.id,
+      user
+    );
     res.send(foundImageData);
   } catch (e) {
     next(e);
@@ -63,7 +65,7 @@ module.exports.uploadImage = async (req, res, next) => {
     const uploadedImage = await imagesService.uploadImage(
       title,
       image,
-      req.user,
+      req.user
     );
 
     res.status(HttpStatus.CREATED).send(uploadedImage);
