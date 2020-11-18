@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const swaggerDocument = require('./swagger.json');
 const {
@@ -34,6 +35,7 @@ const app = express();
 
 // Logging middleware
 app.use(morgan('dev'));
+app.use(cors());
 
 // Json body parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
