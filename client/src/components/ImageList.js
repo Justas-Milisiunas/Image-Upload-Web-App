@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import {
   Card,
   CardContent,
-  CardHeader,
-  IconButton,
   makeStyles,
   Typography,
   Container,
+  CardMedia,
 } from '@material-ui/core';
-import CardMedia from '@material-ui/core/CardMedia';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import { Link } from 'react-router-dom';
 
 import { fetchAllImages } from '../redux/actions/imageActions';
 
