@@ -2,6 +2,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
 
+// TODO: Refactor this code by extracting token data handling to the different file
+
 const getTokensFromLocalStorage = () => {
   const accessToken = localStorage.getItem('access-token');
   const refreshToken = localStorage.getItem('refresh-token');
@@ -31,12 +33,5 @@ const store = createStore(
   initialState,
   composeEnhancers(applyMiddleware(thunkMiddleware))
 );
-
-store.subscribe(() => {
-  const { accessToken, refreshToken } = store.getState().user;
-
-  localStorage.setItem('access-token', accessToken);
-  localStorage.setItem('refresh-token', refreshToken);
-});
 
 export default store;

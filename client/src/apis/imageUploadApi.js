@@ -1,5 +1,8 @@
 import axios from 'axios';
 
-export default axios.create({
+const imageUploadApi = axios.create({
   baseURL: 'http://localhost:3000',
+  withCredentials: true,
 });
+
+export default imageUploadApi;
