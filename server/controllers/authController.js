@@ -1,5 +1,3 @@
-const HttpStatus = require('http-status-codes');
-
 const authService = require('../services/authService');
 
 module.exports.loginUser = async (req, res, next) => {
@@ -7,7 +5,19 @@ module.exports.loginUser = async (req, res, next) => {
 
   try {
     const tokens = await authService.login(email, password);
-    res.json(tokens);
+
+    res.cookie('access-token', tokens.accessToken, {
+      httpOnly: true,
+      maxAge: tokens.accessTokenMaxAge,
+    });
+
+    res.cookie('refresh-token', tokens.refreshToken, {
+      httpOnly: true,
+      path: '/auth/token',
+      maxAge: tokens.refreshTokenMaxAge,
+    });
+
+    res.json(tokens.user);
   } catch (e) {
     next(e);
   }

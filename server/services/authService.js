@@ -3,7 +3,6 @@ const _ = require('lodash');
 const createError = require('http-errors');
 
 const userService = require('./usersService');
-const user = require('../models/user');
 
 let refreshTokens = [];
 
@@ -17,7 +16,15 @@ module.exports.login = async (email, password) => {
   const { _id: userId } = user._id;
   refreshTokens.push({ refreshToken, userId });
 
-  return { accessToken, refreshToken };
+  return {
+    user,
+    accessToken,
+    refreshToken,
+    accessTokenMaxAge:
+      parseInt(process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME, 10) * 1000,
+    refreshTokenMaxAge:
+      parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRE_TIME, 10) * 1000,
+  };
 };
 
 module.exports.logout = (userId) => {
@@ -39,11 +46,15 @@ module.exports.refreshAccessToken = async (refreshToken) => {
 };
 
 const generateAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {
-    expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME,
+  const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {
+    expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRE_TIME + 's',
   });
+
+  return accessToken;
 };
 
 const generateRefreshToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET);
+  const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET);
+
+  return refreshToken;
 };

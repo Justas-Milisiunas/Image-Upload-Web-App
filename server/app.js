@@ -21,6 +21,7 @@ const errorMiddleware = require('./middlewares/errorMiddleware');
 
 // DB connection
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 mongoose.set('useFindAndModify', false);
 
 const mongoDB = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.1ekcu.azure.mongodb.net/image-upload-api?retryWrites=true&w=majority`;
@@ -35,7 +36,8 @@ const app = express();
 
 // Logging middleware
 app.use(morgan('dev'));
-app.use(cors());
+app.use(cors({ credentials: true, origin: process.env.FRONTEND_ORIGIN }));
+app.use(cookieParser());
 
 // Json body parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
