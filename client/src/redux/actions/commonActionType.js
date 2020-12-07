@@ -1,2 +1,0 @@
-export const SUCCESSFUL_FETCH = 'SUCCESSFUL_FETCH';
-export const FAILED_FETCH = 'FAILED_FETCH';
