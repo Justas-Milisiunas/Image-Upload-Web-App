@@ -27,6 +27,11 @@ const saveUserState = (state) => {
 
 const getUserInitialState = () => {
   const userState = loadUserState();
+
+  if (!userState) {
+    return {};
+  }
+
   return {
     user: {
       ...INITIAL_STATE,

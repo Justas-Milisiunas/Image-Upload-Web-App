@@ -1,4 +1,4 @@
-import imagesUploadApi from '../../apis/imageUploadApi';
+import imagesUploadApi from '../../../apis/imageUploadApi';
 import {
   SUCCESSFUL_IMAGES_FETCH,
   SUCCESSFUL_IMAGE_FETCH,

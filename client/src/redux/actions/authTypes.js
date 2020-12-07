@@ -1,2 +1,0 @@
-export const FAILED_SIGN_IN = 'FAILED_SIGN_IN';
-export const SUCCESSFUL_SIGN_IN = 'SUCCESSFUL_SIGN_IN';

@@ -8,7 +8,7 @@ import {
   LOADING_COMMENT_CREATE,
   SUCCESSFUL_COMMENT_CREATE,
   FAILED_COMMENT_CREATE,
-} from '../actions/imageType';
+} from '../actions/image/imageType';
 
 const INITIAL_STATE = {
   isLoading: false,
