@@ -1,25 +1,105 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Button } from '@material-ui/core';
+import { AppBar, Button, Typography, makeStyles } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
-import { signIn } from '../redux/actions';
+import LoginDialog from './LoginDialog';
+import RegisterDialog from './RegisterDialog';
+import { Link } from 'react-router-dom';
+import ProfileMenu from './ProfileMenu';
 
 const NavigationBar = () => {
-  const dispatch = useDispatch();
-  return (
-    <Toolbar variant="regular">
+  const classes = useStyles();
+  const user = useSelector((state) => state.user);
+
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
+  const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
+
+  const handleLoginDialogClose = () => {
+    setLoginDialogOpen(false);
+  };
+
+  const handleRegisterDialogClose = () => {
+    setRegisterDialogOpen(false);
+  };
+
+  const renderSignUpButton = () => {
+    return (
       <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          dispatch(signIn('dzionis', 'password'));
-        }}
+        className={classes.button}
+        color="inherit"
+        onClick={() => setRegisterDialogOpen(!loginDialogOpen)}
       >
-        Primary
+        Sign Up
       </Button>
-    </Toolbar>
+    );
+  };
+
+  const renderSignInButton = () => {
+    return (
+      <Button
+        className={classes.button}
+        color="inherit"
+        onClick={() => setLoginDialogOpen(!loginDialogOpen)}
+      >
+        Sign In
+      </Button>
+    );
+  };
+
+  const renderNavigationButtonsWhenLoggedIn = () => {
+    return (
+      <>
+        <ProfileMenu />
+      </>
+    );
+  };
+
+  const renderNavigationButtonsWhenNotLoggedIn = () => {
+    return (
+      <>
+        {renderSignInButton()}
+        {renderSignUpButton()}
+      </>
+    );
+  };
+
+  return (
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.title}>
+            <Link to="/images" className={classes.link}>
+              Images Upload App
+            </Link>
+          </Typography>
+          {user.isSignedIn
+            ? renderNavigationButtonsWhenLoggedIn()
+            : renderNavigationButtonsWhenNotLoggedIn()}
+        </Toolbar>
+        <LoginDialog open={loginDialogOpen} onClose={handleLoginDialogClose} />
+        <RegisterDialog
+          open={registerDialogOpen}
+          onClose={handleRegisterDialogClose}
+        />
+      </AppBar>
+    </div>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  link: {
+    textDecoration: 'none',
+    color: 'white',
+  },
+  toolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  button: {},
+  title: {
+    flexGrow: 1,
+  },
+}));
 
 export default NavigationBar;
