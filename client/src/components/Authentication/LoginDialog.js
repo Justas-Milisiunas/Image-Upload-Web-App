@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoginForm from './LoginForm';
-import { signIn } from '../redux/actions';
+import { signIn } from '../../redux/actions';
 
 const LoginDialog = ({ open, onClose }) => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const LoginDialog = ({ open, onClose }) => {
     if (isUserSignedIn) {
       onClose();
     }
-  }, [isUserSignedIn]);
+  }, [isUserSignedIn, onClose]);
 
   return (
     <Dialog style={{ padding: 10 }} open={open} onClose={() => onClose()}>

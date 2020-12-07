@@ -3,8 +3,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { AppBar, Button, Typography, makeStyles } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
-import LoginDialog from './LoginDialog';
-import RegisterDialog from './RegisterDialog';
+import LoginDialog from './Authentication/LoginDialog';
+import RegisterDialog from './Authentication/RegisterDialog';
 import { Link } from 'react-router-dom';
 import ProfileMenu from './ProfileMenu';
 

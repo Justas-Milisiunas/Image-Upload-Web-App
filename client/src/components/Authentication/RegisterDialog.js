@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import LoginForm from './LoginForm';
-import { signUp } from '../redux/actions';
+import { signUp } from '../../redux/actions';
 
 const RegisterDialog = ({ open, onClose }) => {
   const dispatch = useDispatch();

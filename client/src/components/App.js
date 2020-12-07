@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import LoginForm from './LoginForm';
-import ImageList from './ImageList';
-import ImageDetails from './ImageDetails';
+import LoginForm from './Authentication/LoginForm';
+import ImageList from './Image/ImageList';
+import ImageDetails from './Image/ImageDetails';
 import NavigationBar from './NavigationBar';
 import Notifications from './Notifications';
 

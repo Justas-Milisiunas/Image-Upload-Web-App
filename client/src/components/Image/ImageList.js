@@ -13,7 +13,7 @@ import {
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
-import { fetchAllImages } from '../redux/actions';
+import { fetchAllImages } from '../../redux/actions';
 
 const ImageList = () => {
   const dispatch = useDispatch();

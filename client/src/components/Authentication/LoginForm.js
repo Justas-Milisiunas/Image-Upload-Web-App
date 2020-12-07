@@ -1,7 +1,6 @@
 import { Button, TextField, Container, makeStyles } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
@@ -9,8 +8,6 @@ import PropTypes from 'prop-types';
 const LoginForm = ({ submitButtonText = 'Log In', onSubmit }) => {
   const classes = useStyles();
   const { register, handleSubmit } = useForm();
-
-  const error = useSelector((state) => state.user.error);
 
   const handleFormSubmit = (data) => {
     onSubmit(data);
