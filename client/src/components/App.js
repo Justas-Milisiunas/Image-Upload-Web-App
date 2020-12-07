@@ -5,6 +5,8 @@ import ImageList from './Image/ImageList';
 import ImageDetails from './Image/ImageDetails';
 import NavigationBar from './NavigationBar';
 import Notifications from './Notifications';
+import BreadCrumbs from './BreadCrumbs';
+import UserProfile from './User/UserProfile';
 
 const App = () => {
   return (
@@ -12,10 +14,11 @@ const App = () => {
       <Notifications />
       <BrowserRouter>
         <NavigationBar />
+        {/* <BreadCrumbs /> */}
         <Switch>
           <Route path="/images" exact component={ImageList} />
           <Route path="/images/:id" component={ImageDetails} />
-          <Route path="/login" exact component={LoginForm} />
+          <Route path="/profile" exact component={UserProfile} />
         </Switch>
       </BrowserRouter>
     </div>

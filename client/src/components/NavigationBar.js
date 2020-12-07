@@ -65,7 +65,7 @@ const NavigationBar = () => {
   };
 
   return (
-    <div>
+    <div className={classes.toolbarDiv}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
@@ -100,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  toolbarDiv: {
+    marginBottom: theme.spacing(2),
+  }
 }));
 
 export default NavigationBar;

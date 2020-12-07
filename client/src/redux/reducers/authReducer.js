@@ -5,6 +5,10 @@ import {
   FAILED_SIGN_UP,
   SUCCESSFUL_LOGOUT,
   FAILED_LOGOUT,
+  SUCCESSFUL_PROFILE_DELETE,
+  FAILED_PROFILE_DELETE,
+  SUCCESSFUL_PROFILE_UPDATE,
+  FAILED_PROFILE_UPDATE,
 } from '../actions/auth/authTypes';
 
 export const INITIAL_STATE = {
@@ -35,6 +39,25 @@ export default (state = INITIAL_STATE, action) => {
         data: null,
       };
     }
+    case SUCCESSFUL_PROFILE_DELETE: {
+      return {
+        ...state,
+        isSignedIn: false,
+        message: 'Profile delete was successful',
+        error: null,
+        data: null,
+      };
+    }
+    case SUCCESSFUL_PROFILE_UPDATE: {
+      const data = action.payload;
+
+      return {
+        ...state,
+        message: 'Profile was updated successfully',
+        error: null,
+        data,
+      };
+    }
     case FAILED_SIGN_UP:
     case FAILED_SIGN_IN:
       return {
@@ -51,6 +74,22 @@ export default (state = INITIAL_STATE, action) => {
         message: null,
         error: action.payload,
         data: null,
+      };
+    }
+    case FAILED_PROFILE_DELETE: {
+      return {
+        ...state,
+        isSignedIn: false,
+        message: null,
+        error: action.payload,
+        data: null,
+      };
+    }
+    case FAILED_PROFILE_UPDATE: {
+      return {
+        ...state,
+        message: null,
+        error: action.payload,
       };
     }
     default:

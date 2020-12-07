@@ -6,6 +6,10 @@ import {
   FAILED_SIGN_UP,
   SUCCESSFUL_LOGOUT,
   FAILED_LOGOUT,
+  SUCCESSFUL_PROFILE_DELETE,
+  FAILED_PROFILE_DELETE,
+  SUCCESSFUL_PROFILE_UPDATE,
+  FAILED_PROFILE_UPDATE,
 } from './authTypes';
 
 export const signIn = (email, password) => async (dispatch) => {
@@ -48,6 +52,31 @@ export const signOut = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: FAILED_LOGOUT,
+      payload: (e.response && e.response.data.error) || e.message,
+    });
+  }
+};
+
+export const deleteProfile = () => async (dispatch) => {
+  try {
+    // eslint-disable-next-line no-unused-vars
+    const response = await imagesUploadApi.delete('/users');
+    dispatch({ type: SUCCESSFUL_PROFILE_DELETE });
+  } catch (e) {
+    dispatch({
+      type: FAILED_PROFILE_DELETE,
+      payload: (e.response && e.response.data.error) || e.message,
+    });
+  }
+};
+
+export const updateProfile = (updatedUserData) => async (dispatch) => {
+  try {
+    const response = await imagesUploadApi.put('/users', updatedUserData);
+    dispatch({ type: SUCCESSFUL_PROFILE_UPDATE, payload: response.data });
+  } catch (e) {
+    dispatch({
+      type: FAILED_PROFILE_UPDATE,
       payload: (e.response && e.response.data.error) || e.message,
     });
   }
