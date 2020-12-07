@@ -5,8 +5,8 @@ import Alert from '@material-ui/lab/Alert';
 import { Snackbar } from '@material-ui/core';
 
 const Notifications = () => {
-  const error = useSelector((state) => state.user.error || state.images.error);
-  const message = useSelector((state) => state.user.message);
+  const error = useSelector((state) => state.user.error);
+  const message = useSelector((state) => state.images.message);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
