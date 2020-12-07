@@ -22,7 +22,7 @@ const ImageList = () => {
 
   useEffect(() => {
     dispatch(fetchAllImages());
-  }, []);
+  }, [dispatch]);
 
   const renderImageList = () => {
     return images.map((img) => {

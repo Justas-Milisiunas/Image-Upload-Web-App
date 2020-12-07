@@ -13,7 +13,12 @@ import {
 
 const CommentForm = ({ onSubmit }) => {
   const classes = useStyles();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
+
+  const handleFormSubmit = (comment) => {
+    reset({ message: '' });
+    onSubmit(comment);
+  };
 
   return (
     <Card className={classes.card}>
@@ -28,7 +33,7 @@ const CommentForm = ({ onSubmit }) => {
         />
         <Button
           className={classes.submitButton}
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit(handleFormSubmit)}
           type="submit"
           variant="contained"
           color="primary"

@@ -12,7 +12,7 @@ export const signIn = (email, password) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: FAILED_SIGN_IN,
-      payload: e.response.data.error || e.message,
+      payload: (e.response && e.response.data.error) || e.message,
     });
   }
 };

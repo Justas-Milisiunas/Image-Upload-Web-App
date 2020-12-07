@@ -7,8 +7,6 @@ import ImageDetails from './ImageDetails';
 import NavigationBar from './NavigationBar';
 
 const App = () => {
-  const isSignedIn = useSelector((state) => state.user.isSignedIn);
-
   return (
     <div>
       <BrowserRouter>

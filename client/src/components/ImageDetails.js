@@ -7,8 +7,6 @@ import {
   Container,
   makeStyles,
   CardContent,
-  CardHeader,
-  IconButton,
   Typography,
 } from '@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -30,7 +28,7 @@ const ImageDetails = () => {
 
   useEffect(() => {
     dispatch(fetchImage(imageId));
-  }, []);
+  }, [dispatch, imageId]);
 
   const renderImageDetails = () => {
     if (!image) {
@@ -75,7 +73,9 @@ const ImageDetails = () => {
   };
 
   return (
-    <Container className={classes.container}>{renderImageDetails()}</Container>
+    <Container className={classes.container}>
+      <div>{renderImageDetails()}</div>
+    </Container>
   );
 };
 

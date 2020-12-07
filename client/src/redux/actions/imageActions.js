@@ -19,7 +19,7 @@ export const fetchAllImages = () => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: FAILED_IMAGES_FETCH,
-      payload: e.response.data.error || e.message,
+      payload: (e.response && e.response.data.error) || e.message,
     });
   }
 };
@@ -47,7 +47,7 @@ export const addComment = (imageId, comment) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: FAILED_COMMENT_CREATE,
-      payload: e.response.data.error || e.message,
+      payload: (e.response && e.response.data.error) || e.message,
     });
   }
 };
