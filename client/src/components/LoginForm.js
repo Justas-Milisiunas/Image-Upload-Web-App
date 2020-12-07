@@ -1,25 +1,23 @@
 import { Button, TextField, Container, makeStyles } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { signIn } from '../redux/actions';
+import PropTypes from 'prop-types';
 
 // TODO: Add client side validation
-const LoginForm = () => {
-  const dispatch = useDispatch();
+const LoginForm = ({ submitButtonText = 'Log In', onSubmit }) => {
   const classes = useStyles();
   const { register, handleSubmit } = useForm();
 
   const error = useSelector((state) => state.user.error);
 
-  const onSubmit = ({ email, password }) => {
-    dispatch(signIn(email, password));
+  const handleFormSubmit = (data) => {
+    onSubmit(data);
   };
 
   return (
-    <div>
-      {error}
+    <div className={classes.formDiv}>
       <Container className={classes.container}>
         <TextField
           name="email"
@@ -35,23 +33,28 @@ const LoginForm = () => {
           inputRef={register}
         />
         <Button
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit(handleFormSubmit)}
           type="submit"
           variant="contained"
           color="primary"
         >
-          Log In
+          {submitButtonText}
         </Button>
       </Container>
     </div>
   );
 };
 
+LoginForm.propTypes = {
+  submitButtonText: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired,
+};
+
 const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    width: '25%',
+    width: '20vw',
     gap: '1rem',
   },
 });
