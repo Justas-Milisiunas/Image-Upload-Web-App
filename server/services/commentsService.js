@@ -36,10 +36,7 @@ module.exports.deleteComment = async (imageId, commentId, user) => {
 module.exports.createComment = async (imageId, userId, newCommentData) => {
   const foundImage = await imageService.getImageAsync(imageId);
 
-  const createdComment = await foundImage.addComment(userId, newCommentData);
-  createdComment.imageId = imageId;
-
-  return createdComment;
+  return await foundImage.addComment(userId, newCommentData);
 };
 
 const checkIfUserIsAdminOrCommentOwner = (comment, user) => {

@@ -119,7 +119,8 @@ ImageModelSchema.methods.getComment = function (commentId) {
 };
 
 ImageModelSchema.methods.addComment = async function (userId, message) {
-  const newComment = { userId, ...message };
+  const imageId = this._id;
+  const newComment = { userId, ...message, imageId };
   const commentDocument = await this.comments.create(newComment);
 
   const error = commentDocument.validateSync();
