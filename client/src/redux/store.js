@@ -2,36 +2,50 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import reducers from './reducers';
 
-// TODO: Refactor this code by extracting token data handling to the different file
+import { INITIAL_STATE } from './reducers/authReducer';
 
-const getTokensFromLocalStorage = () => {
-  const accessToken = localStorage.getItem('access-token');
-  const refreshToken = localStorage.getItem('refresh-token');
+// TODO: Refactor this code by extracting user state handling to the different file
 
-  return {
-    accessToken,
-    refreshToken,
-  };
+const loadUserState = () => {
+  try {
+    const userState = localStorage.getItem('user');
+    return JSON.parse(userState);
+  } catch (e) {
+    console.log(e.message);
+    return null;
+  }
 };
 
-const isUserSignedIn = (tokens) =>
-  Boolean(tokens.accessToken && tokens.refreshToken);
+const saveUserState = (state) => {
+  try {
+    const deserializedUserState = JSON.stringify(state.user.data);
+    localStorage.setItem('user', deserializedUserState);
+  } catch (e) {
+    console.log(e.message);
+  }
+};
 
-const tokensFromLocalStorage = getTokensFromLocalStorage();
-
-const initialState = {
-  user: {
-    ...tokensFromLocalStorage,
-    isSignedIn: isUserSignedIn(tokensFromLocalStorage),
-  },
+const getUserInitialState = () => {
+  const userState = loadUserState();
+  return {
+    user: {
+      ...INITIAL_STATE,
+      data: userState,
+      isSignedIn: true,
+    },
+  };
 };
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   reducers,
-  initialState,
+  getUserInitialState(),
   composeEnhancers(applyMiddleware(thunkMiddleware))
 );
+
+store.subscribe(() => {
+  saveUserState(store.getState());
+});
 
 export default store;
