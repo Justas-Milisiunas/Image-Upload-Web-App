@@ -136,7 +136,10 @@ ImageModelSchema.methods.addComment = async function (userId, message) {
 };
 
 ImageModelSchema.methods.deleteComment = async function (commentId) {
+  const imageId = this._id;
+
   const foundComment = this.getComment(commentId);
+  foundComment.imageId = imageId;
 
   foundComment.remove();
   await this.save();

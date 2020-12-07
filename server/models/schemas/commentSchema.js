@@ -12,7 +12,6 @@ const CommentSchema = new mongoose.Schema({
   },
   imageId: {
     type: mongoose.Types.ObjectId,
-    required: [true, 'Image ID is required'],
     immutable: true,
   }
 });
