@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { addComment } from '../../redux/actions/imageActions';
+import { addComment } from '../../redux/actions';
 import CommentForm from './CommentForm';
 
 const CommentCreate = ({ imageId }) => {
