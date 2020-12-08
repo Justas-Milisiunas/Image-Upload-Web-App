@@ -39,7 +39,7 @@ module.exports.createRating = async (imageId, userId, rating) => {
     return null;
   }
 
-  return await foundImage.addRating(userId, rating);
+  return await foundImage.addRating(userId, imageId, rating);
 };
 
 const checkIfUserIsAdminOrRatingOwner = (rating, user) => {

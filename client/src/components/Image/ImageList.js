@@ -9,11 +9,13 @@ import {
   Typography,
   Container,
   CardMedia,
+  Button,
+  Fab,
 } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import AddIcon from '@material-ui/icons/Add';
 
 import { fetchAllImages } from '../../redux/actions';
+import ImageRating from './ImageRating';
 
 const ImageList = () => {
   const dispatch = useDispatch();
@@ -33,10 +35,7 @@ const ImageList = () => {
               <Typography gutterBottom variant="h5" component="h2">
                 {img.title}
               </Typography>
-              <div className={classes.ratingButtons}>
-                <ArrowUpwardIcon className={classes.ratingButton} />
-                <ArrowDownwardIcon className={classes.ratingButton} />
-              </div>
+              <ImageRating image={img} />
             </CardContent>
             <CardMedia
               className={classes.image}
@@ -56,18 +55,26 @@ const ImageList = () => {
   }
 
   return (
-    <Container className={classes.imageList}>{renderImageList()}</Container>
+    <Container className={classes.imageList}>
+      <Link to="/images/create" style={{ textDecoration: 'none' }}>
+        <Fab className={classes.addButton} color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </Link>
+      {renderImageList()}
+    </Container>
   );
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
-    width: '100%',
-    marginBottom: 20,
+    marginBottom: theme.spacing(2),
     backgroundColor: '#f5f5f5',
+    flexGrow: 1,
+    flexShrink: 1,
   },
   image: {
-    width: '100%',
+    maxWidth: '100%',
     height: 'auto',
   },
   cardHeader: {
@@ -85,11 +92,24 @@ const useStyles = makeStyles({
     marginLeft: '1vw',
   },
   imageList: {
-    width: '25%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
   },
   link: {
     textDecoration: 'none',
   },
-});
+  addButton: {
+    margin: 0,
+    top: 'auto',
+    right: theme.spacing(10),
+    bottom: theme.spacing(10),
+    left: 'auto',
+    position: 'fixed',
+    transform: 'scaleX(1.5) scaleY(1.5)',
+  },
+}));
 
 export default ImageList;

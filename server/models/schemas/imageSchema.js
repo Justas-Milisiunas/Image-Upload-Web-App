@@ -46,8 +46,8 @@ const ImageModelSchema = new mongoose.Schema(
   }
 );
 
-ImageModelSchema.methods.addRating = async function (userId, rating) {
-  const newRating = { userId, rating };
+ImageModelSchema.methods.addRating = async function (userId, imageId, rating) {
+  const newRating = { userId, rating, imageId };
 
   // Creates rating subdoc without adding to the Image document
   const savedRating = await this.rating.create(newRating);

@@ -16,7 +16,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileDetails from './ProfileDetails';
 import { deleteProfile } from '../../redux/actions';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import ProfileEditDialog from './ProfileEditDialog';
 
 const UserProfile = ({ history }) => {

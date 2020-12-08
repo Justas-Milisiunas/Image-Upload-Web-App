@@ -47,7 +47,7 @@ export const signUp = (email, password) => async (dispatch) => {
 export const signOut = () => async (dispatch) => {
   try {
     // eslint-disable-next-line no-unused-vars
-    const response = await imagesUploadApi.get('/auth/signOut');
+    const response = await imagesUploadApi.get('/auth/logout');
     dispatch({ type: SUCCESSFUL_LOGOUT });
   } catch (e) {
     dispatch({

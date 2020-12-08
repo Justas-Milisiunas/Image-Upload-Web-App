@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, withRouter } from 'react-router-dom';
 
 import {
   Card,
@@ -8,16 +8,19 @@ import {
   makeStyles,
   CardContent,
   Typography,
+  Button,
 } from '@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PropTypes from 'prop-types';
 
-import { fetchImage } from '../../redux/actions';
-import Comment from '../Comment/CommentShow';
+import { deleteImage, fetchImage } from '../../redux/actions';
+import Comment from '../Comment/Comment';
 import CommentCreate from '../Comment/CommentCreate';
+import ImageRating from './ImageRating';
 
-const ImageDetails = () => {
+const ImageDetails = ({ history }) => {
   const { id: imageId } = useParams();
   const classes = useStyles();
 
@@ -25,10 +28,50 @@ const ImageDetails = () => {
   const image = useSelector(
     (state) => state.images.data.filter((img) => img._id === imageId)[0]
   );
+  const user = useSelector((state) => state.user.data);
 
   useEffect(() => {
     dispatch(fetchImage(imageId));
   }, [dispatch, imageId]);
+
+  const canUserUseActionButtons =
+    user && image && (user._id === image.userId || user.role === 2);
+
+  const handleEditButtonClick = () => {};
+
+  const handleDeleteButtonClick = () => {
+    dispatch(deleteImage(imageId));
+    history.push('/images');
+  };
+
+  const renderActionButtons = () => {
+    return (
+      <div className={classes.actionButtons}>
+        {canUserUseActionButtons && (
+          <>
+            <Button
+              onClick={handleEditButtonClick}
+              className={classes.actionButton}
+              variant="contained"
+              color="primary"
+              startIcon={<EditIcon />}
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={handleDeleteButtonClick}
+              className={classes.actionButton}
+              variant="contained"
+              color="secondary"
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+          </>
+        )}
+      </div>
+    );
+  };
 
   const renderImageDetails = () => {
     if (!image) {
@@ -39,13 +82,18 @@ const ImageDetails = () => {
     return (
       <Card variant="outlined" className={classes.card}>
         <CardContent className={classes.cardHeader}>
-          <Typography gutterBottom variant="h5" component="h2">
-            {image.title}
-          </Typography>
-          <div className={classes.ratingButtons}>
-            <ArrowUpwardIcon className={classes.ratingButton} />
-            <ArrowDownwardIcon className={classes.ratingButton} />
+          <div className={classes.imageTitleInfo}>
+            <Typography
+              className={classes.title}
+              gutterBottom
+              variant="h5"
+              component="h2"
+            >
+              {image.title}
+            </Typography>
+            <ImageRating image={image} />
           </div>
+          {canUserUseActionButtons && renderActionButtons()}
         </CardContent>
         <div className={classes.contentPanel}>
           <div className={classes.leftPanel}>
@@ -59,7 +107,7 @@ const ImageDetails = () => {
           </div>
           <div className={classes.rightPanel}>
             {renderImageComments()}
-            <CommentCreate imageId={image._id} />
+            {user && <CommentCreate imageId={image._id} />}
           </div>
         </div>
       </Card>
@@ -68,49 +116,57 @@ const ImageDetails = () => {
 
   const renderImageComments = () => {
     return image.comments.map((comment) => {
-      return <Comment key={comment._id} comment={comment} />;
+      return <Comment key={comment._id} comment={comment} imageId={imageId} />;
     });
   };
 
   return (
-    <Container className={classes.container}>
-      <div>{renderImageDetails()}</div>
-    </Container>
+    <Container className={classes.container}>{renderImageDetails()}</Container>
   );
 };
 
-const useStyles = makeStyles({
-  container: {
-    width: '75vw',
-    height: 100,
-  },
+ImageDetails.propTypes = {
+  history: PropTypes.object,
+};
+
+// TODO: Remove changed font
+const useStyles = makeStyles((theme) => ({
+  container: {},
   card: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: theme.spacing(2),
     backgroundColor: '#f5f5f5',
   },
   image: {
     width: '100%',
     height: 'auto',
   },
+  title: {
+    fontFamily: 'Courier New',
+  },
   cardHeader: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
-  ratingButtons: {
+  imageTitleInfo: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
-  ratingButton: {
-    width: '2rem',
-    height: '2rem',
-    marginLeft: '1vw',
+  actionButtons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flexEnd',
+  },
+  actionButton: {
+    marginLeft: theme.spacing(2),
   },
   contentPanel: {
     display: 'flex',
     flexDirection: 'row',
-    flexWrap: 'nowrap',
+    flexWrap: 'wrap',
   },
   leftPanel: {
     flexGrow: 3,
@@ -119,8 +175,7 @@ const useStyles = makeStyles({
   rightPanel: {
     flexGrow: 1,
     flexShrink: 2,
-    marginLeft: '1vw',
   },
-});
+}));
 
-export default ImageDetails;
+export default withRouter(ImageDetails);

@@ -1,3 +1,5 @@
+const HttpStatus = require('http-status-codes');
+
 const authService = require('../services/authService');
 
 module.exports.loginUser = async (req, res, next) => {
@@ -29,6 +31,16 @@ module.exports.refreshToken = async (req, res, next) => {
   try {
     const newAccessToken = await authService.refreshAccessToken(refreshToken);
     res.json({ accessToken: newAccessToken });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.logout = async (req, res, next) => {
+  try {
+    res.clearCookie('access-token');
+    res.clearCookie('refresh-token');
+    res.sendStatus(HttpStatus.OK);
   } catch (e) {
     next(e);
   }

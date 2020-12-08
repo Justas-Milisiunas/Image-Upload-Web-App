@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarDiv: {
     marginBottom: theme.spacing(2),
-  }
+  },
 }));
 
 export default NavigationBar;

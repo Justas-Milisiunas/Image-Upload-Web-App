@@ -33,7 +33,7 @@ const ProfileMenu = ({ history }) => {
   return (
     <div>
       <IconButton color="inherit" onClick={handleMenu}>
-        <AccountCircle />
+        <AccountCircle style={{width: 40, height: 40}} />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
