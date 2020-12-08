@@ -61,6 +61,7 @@ const ImageCreate = ({ history }) => {
             value={title}
           />
           <DropzoneArea
+            acceptedFiles={['image/jpeg']}
             filesLimit={1}
             showAlerts={false}
             onChange={handleFileUploadChange}

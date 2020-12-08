@@ -6,11 +6,10 @@ import NavigationBar from './NavigationBar';
 import Notifications from './Notifications';
 import UserProfile from './User/UserProfile';
 import ImageCreate from './Image/ImageCreate';
-import Footer from './Footer';
 
 const App = () => {
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Notifications />
       <BrowserRouter>
         <NavigationBar />
@@ -21,7 +20,6 @@ const App = () => {
           <Route path="/profile" exact component={UserProfile} />
         </Switch>
       </BrowserRouter>
-      <Footer />
     </div>
   );
 };

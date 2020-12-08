@@ -49,7 +49,7 @@ const ImageDetails = ({ history }) => {
       <div className={classes.actionButtons}>
         {canUserUseActionButtons && (
           <>
-            <Button
+            {/* <Button
               onClick={handleEditButtonClick}
               className={classes.actionButton}
               variant="contained"
@@ -57,7 +57,7 @@ const ImageDetails = ({ history }) => {
               startIcon={<EditIcon />}
             >
               Edit
-            </Button>
+            </Button> */}
             <Button
               onClick={handleDeleteButtonClick}
               className={classes.actionButton}
