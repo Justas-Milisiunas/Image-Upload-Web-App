@@ -20,6 +20,7 @@ module.exports.updateImageAsync = async (imageId, updatedImageData, user) => {
   const { title } = updatedImageData;
 
   const foundImage = await this.getImageAsync(imageId);
+
   checkIfUserImageOwner(foundImage, user);
 
   foundImage.title = title;
@@ -47,7 +48,7 @@ module.exports.getProtectedImageAsync = async (id) => {
   };
 };
 
-module.exports.uploadImage = async (title, file, { _id: userId }) => {
+module.exports.uploadImage = async (title, file, { _id: userId, role }) => {
   const extension = mime.extension(file.mimetype);
 
   const newImage = new Image({
@@ -69,8 +70,8 @@ module.exports.uploadImage = async (title, file, { _id: userId }) => {
   return await newImage.save();
 };
 
-const checkIfUserImageOwner = async (image, user) => {
-  if (user._id !== image.userId && user.role !== UserRole.ADMIN) {
+const checkIfUserImageOwner = (image, user) => {
+  if (user._id !== image.userId.toString() && user.role !== UserRole.ADMIN) {
     throw createError.Forbidden('You are not the owner of this image');
   }
 };

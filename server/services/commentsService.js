@@ -35,6 +35,7 @@ module.exports.deleteComment = async (imageId, commentId, user) => {
 
 module.exports.createComment = async (imageId, userId, newCommentData) => {
   const foundImage = await imageService.getImageAsync(imageId);
+
   return await foundImage.addComment(userId, newCommentData);
 };
 

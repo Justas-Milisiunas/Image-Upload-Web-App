@@ -46,8 +46,8 @@ const ImageModelSchema = new mongoose.Schema(
   }
 );
 
-ImageModelSchema.methods.addRating = async function (userId, rating) {
-  const newRating = { userId, rating };
+ImageModelSchema.methods.addRating = async function (userId, imageId, rating) {
+  const newRating = { userId, rating, imageId };
 
   // Creates rating subdoc without adding to the Image document
   const savedRating = await this.rating.create(newRating);
@@ -119,7 +119,8 @@ ImageModelSchema.methods.getComment = function (commentId) {
 };
 
 ImageModelSchema.methods.addComment = async function (userId, message) {
-  const newComment = { userId, ...message };
+  const imageId = this._id;
+  const newComment = { userId, ...message, imageId };
   const commentDocument = await this.comments.create(newComment);
 
   const error = commentDocument.validateSync();
@@ -135,7 +136,10 @@ ImageModelSchema.methods.addComment = async function (userId, message) {
 };
 
 ImageModelSchema.methods.deleteComment = async function (commentId) {
+  const imageId = this._id;
+
   const foundComment = this.getComment(commentId);
+  foundComment.imageId = imageId;
 
   foundComment.remove();
   await this.save();

@@ -13,6 +13,10 @@ const RatingSchema = new mongoose.Schema({
     enum: [RatingStatus.DOWNVOTE, RatingStatus.UPVOTE],
     required: [true, 'Rating status is required'],
   },
+  imageId: {
+    type: mongoose.Types.ObjectId,
+    immutable: true,
+  }
 });
 
 module.exports = RatingSchema;

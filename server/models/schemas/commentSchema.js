@@ -10,6 +10,10 @@ const CommentSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Comment message is required'],
   },
+  imageId: {
+    type: mongoose.Types.ObjectId,
+    immutable: true,
+  }
 });
 
 module.exports = CommentSchema;

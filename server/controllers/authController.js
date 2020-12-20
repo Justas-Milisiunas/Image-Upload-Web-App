@@ -7,7 +7,19 @@ module.exports.loginUser = async (req, res, next) => {
 
   try {
     const tokens = await authService.login(email, password);
-    res.json(tokens);
+
+    res.cookie('access-token', tokens.accessToken, {
+      httpOnly: true,
+      maxAge: tokens.accessTokenMaxAge,
+    });
+
+    res.cookie('refresh-token', tokens.refreshToken, {
+      httpOnly: true,
+      path: '/auth/token',
+      maxAge: tokens.refreshTokenMaxAge,
+    });
+
+    res.json(tokens.user);
   } catch (e) {
     next(e);
   }
@@ -19,6 +31,16 @@ module.exports.refreshToken = async (req, res, next) => {
   try {
     const newAccessToken = await authService.refreshAccessToken(refreshToken);
     res.json({ accessToken: newAccessToken });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.logout = async (req, res, next) => {
+  try {
+    res.clearCookie('access-token');
+    res.clearCookie('refresh-token');
+    res.sendStatus(HttpStatus.OK);
   } catch (e) {
     next(e);
   }
