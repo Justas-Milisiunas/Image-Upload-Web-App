@@ -3,7 +3,8 @@
 Web app with basic functionality inspired by https://imgur.com/
 
 # Tech stack:
- Frontend - React + Redux
+Frontend - React + Redux
+
 Backend - Node.js + Express + MongoDB
 
 # Demo images
